@@ -7,7 +7,7 @@
    so this page cannot read, write or remove a production key ('bloodrush-st', 'bloodrush-best', ...). */
 (function(){
 var P='bloodrushDEV-';
-var D=window.BR_DEV={build:'0.1.0-dev.1',stage:'Stage 0',base:'prod 44007dff',prefix:P,errors:[],rewrites:0,onerr:null};
+var D=window.BR_DEV={build:'0.1.0-dev.4',stage:'Stage 1a + C1 + B characters',base:'prod 44007dff',prefix:P,errors:[],rewrites:0,onerr:null};
 function rec(kind,msg){var E=D.errors,last=E[E.length-1];msg=String(msg).slice(0,300);
  if(last&&last.m===msg&&last.k===kind){last.n++;last.t=Date.now()}else{E.push({k:kind,m:msg,n:1,t:Date.now()});if(E.length>30)E.shift()}
  if(D.onerr)try{D.onerr()}catch(e){}}
@@ -159,7 +159,38 @@ button:not(:disabled):active{transform:scale(.96);filter:brightness(1.2)}.ov,#ov
 #sel #cs .sw::after{content:attr(aria-label);position:absolute;left:2px;right:2px;bottom:5px;font:600 9.5px system-ui,-apple-system,sans-serif;color:#fff;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px #000}
 #sel #cs .sw.on{border:2px solid #ff3a50;box-shadow:0 0 14px rgba(255,40,70,.75);transform:translateY(-3px)}
 #sel #cok{border-radius:18px;min-width:220px;margin-top:10px}
-</style></head><body>
+</style><style id="c1-menu-layout">
+/* ===== C1: main-menu layout (dev). Rise sits low, in thumb reach, instead of mid-screen.
+   Cause of the old position: pages in the menu pager are as tall as the tallest page (Collection), and Rise was the first
+   item on the Home page, so it sat at the top of a tall column. Behaviour and touch handling of Rise are unchanged. ===== */
+#ov #pgM{justify-content:flex-end}
+/* side buttons start below the subtitle on every height */
+#msd .msb:nth-child(1),#msd .msb:nth-child(4){top:calc(env(safe-area-inset-top,0px) + max(21vh,168px))}
+#msd .msb:nth-child(2),#msd .msb:nth-child(5){top:calc(env(safe-area-inset-top,0px) + max(21vh,168px) + 84px)}
+#msd .msb:nth-child(3),#msd .msb:nth-child(6){top:calc(env(safe-area-inset-top,0px) + max(21vh,168px) + 168px)}
+#msd .msb.l{left:calc(env(safe-area-inset-left,0px) + 12px)}#msd .msb.r{right:calc(env(safe-area-inset-right,0px) + 12px)}
+/* short portrait screens (small phones, Safari with toolbars): smaller, tighter side buttons */
+@media (orientation:portrait) and (max-height:700px){
+ #msd .msb{width:50px;height:50px;border-radius:14px}#msd .mi svg{width:23px;height:23px}#msd .msb small{top:52px;font-size:10px}
+ #msd .msb:nth-child(1),#msd .msb:nth-child(4){top:calc(env(safe-area-inset-top,0px) + 158px)}
+ #msd .msb:nth-child(2),#msd .msb:nth-child(5){top:calc(env(safe-area-inset-top,0px) + 158px + 70px)}
+ #msd .msb:nth-child(3),#msd .msb:nth-child(6){top:calc(env(safe-area-inset-top,0px) + 158px + 140px)}
+ #ov h1{font-size:clamp(30px,10vw,48px)}
+}
+/* landscape phones: side buttons become two short rows in the bottom corners, Rise stays centred between them */
+@media (orientation:landscape) and (max-height:500px){
+ #msd .msb{width:44px;height:44px;border-radius:12px;top:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 92px)}
+ #msd .mi svg{width:21px;height:21px}#msd .msb small{top:46px;font-size:9.5px}
+ #msd .msb:nth-child(1){left:calc(env(safe-area-inset-left,0px) + 12px)}#msd .msb:nth-child(2){left:calc(env(safe-area-inset-left,0px) + 66px)}#msd .msb:nth-child(3){left:calc(env(safe-area-inset-left,0px) + 120px)}
+ #msd .msb:nth-child(4){right:calc(env(safe-area-inset-right,0px) + 120px)}#msd .msb:nth-child(5){right:calc(env(safe-area-inset-right,0px) + 66px)}#msd .msb:nth-child(6){right:calc(env(safe-area-inset-right,0px) + 12px)}
+ #ov #go{max-width:min(300px,calc(100vw - 2 * (env(safe-area-inset-left,0px) + 190px)));padding:12px 0}
+ #ov h1{font-size:clamp(26px,6vh,40px)}#ov>div:first-child{padding-top:46px;padding-bottom:70px}
+ #ov>#mtab{max-width:360px;bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}#mtab button{padding:9px 0}
+ /* pages fit the screen height; a page taller than the screen scrolls inside itself */
+ #ov>div:first-child{height:100%;box-sizing:border-box;min-height:0}#ov #pgr{flex:1 1 0;min-height:0}#ov #pgs{height:100%}#ov .pg{min-height:0;overflow-y:auto}
+}
+</style>
+</head><body>
 <canvas id="c"></canvas><svg width='0' height='0' style='position:absolute' aria-hidden='true'><defs><radialGradient id='grb' cx='.35' cy='.3' r='.85'><stop offset='0' stop-color='#ff7d8c'/><stop offset='.35' stop-color='#e0182f'/><stop offset='.75' stop-color='#8a0a1c'/><stop offset='1' stop-color='#3a0210'/></radialGradient><linearGradient id='grh' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#ff8a98'/><stop offset='.4' stop-color='#e41a3c'/><stop offset='1' stop-color='#6a0420'/></linearGradient>
 <symbol id='i-blood' viewBox='0 0 64 64'><path d='M32 3C32 3 11 27 11 40C11 52 20 61 32 61C44 61 53 52 53 40C53 27 32 3 32 3Z' fill='url(#grb)' stroke='#3a0210' stroke-width='2'/><path d='M32 7L21 40L32 58L43 40Z' fill='#fff' opacity='.07'/><path d='M32 7L32 58' stroke='#3a0210' stroke-width='1' opacity='.35'/><path d='M21 38C20 31 24 24 29 15C27 24 27 31 29 39C26 42 22 42 21 38Z' fill='#fff' opacity='.75'/><ellipse cx='25' cy='46' rx='2.6' ry='1.8' fill='#fff' opacity='.55'/><path d='M44 46C42 53 36 57 30 57C38 58 46 52 47 42Z' fill='#ff8090' opacity='.45'/><path d='M32 12C28 24 20 32 20 41C20 49 25 54 32 54' stroke='#ff9aa6' stroke-width='1.6' fill='none' opacity='.45'/><path d='M40 30C44 36 44 44 38 50' stroke='#3a0210' stroke-width='3' fill='none' opacity='.35'/><rect class='pxs' x='50' y='14' width='4' height='4' fill='#ff6070'/><rect class='pxs' x='8' y='30' width='3' height='3' fill='#ffb0b8'/><rect class='pxs' x='54' y='38' width='3' height='3' fill='#ff3040'/><rect class='pxs' x='14' y='8' width='3' height='3' fill='#ff8090'/></symbol>
 <symbol id='i-heart' viewBox='0 0 64 64'><path d='M32 59C10 43 5 31 5 22C5 13 12 6 21 6C26 6 30 9 32 13C34 9 38 6 43 6C52 6 59 13 59 22C59 31 54 43 32 59Z' fill='url(#grh)' stroke='#4a0214' stroke-width='2'/><path d='M13 20C13 15 17 12 21 12C18 14 16 17 16 21C16 24 14 25 13 20Z' fill='#fff' opacity='.8'/><ellipse cx='44' cy='17' rx='3' ry='2' fill='#fff' opacity='.35' transform='rotate(-25 44 17)'/><path d='M50 30C48 40 40 49 32 55C42 50 52 41 53 28Z' fill='#ff8090' opacity='.35'/><path d='M50 4L51.6 8.4L56 10L51.6 11.6L50 16L48.4 11.6L44 10L48.4 8.4Z' fill='#ffe08a'/><path d='M32 52C18 42 12 32 12 24' stroke='#3a0214' stroke-width='3' fill='none' opacity='.35'/><ellipse cx='20' cy='17' rx='5' ry='3' fill='#fff' opacity='.35' transform='rotate(-30 20 17)'/></symbol></defs></svg>
@@ -218,31 +249,40 @@ const geo=(w,h,d)=>{const k=w+','+h+','+d;return G[k]||(G[k]=new THREE.BoxGeomet
 const bx=(w,h,d,m,x,y,z,p)=>{const o=new THREE.Mesh(geo(w,h,d),m);o.position.set(x,y,z);p&&p.add(o);return o};
 const rnd=(a,b)=>a+Math.random()*(b-a);
 // ===== VOXEL MODELS (characters, wolf, bat, blood drop, chalice) =====
-function vxMap(){const m=new Map();return{m,P:'body',set(x,y,z,c){m.set(x+','+y+','+z,[x,y,z,c,this.P])},box(a,b,c,d,e,f,col){for(let x=a;x<=d;x++)for(let y=b;y<=e;y++)for(let z=c;z<=f;z++)this.set(x,y,z,col)},glow(x,y,z,c){const p=this.P;this.P=p+'*';this.set(x,y,z,c);this.P=p}}}
+// Stage B (dev): baked ambient occlusion + per-block colour variation, wider arms and hands, rounded jaw, sneaker toes,
+// pixel-art faces with expressions (replacing voxel eyes), blended procedural animation, quieter aura.
+function vxMap(){const m=new Map();return{m,P:'body',set(x,y,z,c){m.set(x+','+y+','+z,[x,y,z,c,this.P])},del(x,y,z){m.delete(x+','+y+','+z)},box(a,b,c,d,e,f,col){for(let x=a;x<=d;x++)for(let y=b;y<=e;y++)for(let z=c;z<=f;z++)this.set(x,y,z,col)},glow(x,y,z,c){const p=this.P;this.P=p+'*';this.set(x,y,z,c);this.P=p}}}
 var VXF=[[1,0,0,[[1,0,0],[1,1,0],[1,1,1],[1,0,1]],.84],[-1,0,0,[[0,0,1],[0,1,1],[0,1,0],[0,0,0]],.84],[0,1,0,[[0,1,1],[1,1,1],[1,1,0],[0,1,0]],1],[0,-1,0,[[0,0,0],[1,0,0],[1,0,1],[0,0,1]],.6],[0,0,1,[[1,0,1],[1,1,1],[0,1,1],[0,0,1]],.94],[0,0,-1,[[0,0,0],[0,1,0],[1,1,0],[1,0,0]],.94]];
-function vxGeo(vm,part,tf){const pos=[],nor=[],col=[],idx=[],own=new Set();
+var VXAO=[.56,.72,.87,1];// ambient-occlusion brightness for 0..3 open neighbours
+function vxOcc(vm){if(vm._occ)return vm._occ;const s=new Set();for(const v of vm.m.values()){const p=v[4];if(p.slice(-1)==='*'||p==='glow')continue;s.add(v[0]+','+v[1]+','+v[2])}return vm._occ=s}
+function vxGeo(vm,part,tf){const pos=[],nor=[],col=[],idx=[],own=new Set(),occ=vxOcc(vm);
  for(const v of vm.m.values())if(part===null||v[4]===part)own.add(v[0]+','+v[1]+','+v[2]);
- for(const v of vm.m.values()){if(part!==null&&v[4]!==part)continue;const x=v[0],y=v[1],z=v[2],c=v[3];
+ for(const v of vm.m.values()){if(part!==null&&v[4]!==part)continue;const x=v[0],y=v[1],z=v[2],c=v[3],lit=v[4].slice(-1)==='*'||v[4]==='glow';
+  const jit=lit?1:1+((((x*73856093)^(y*19349663)^(z*83492791))>>>0)%9-4)*.011;
   for(const f of VXF){if(own.has((x+f[0])+','+(y+f[1])+','+(z+f[2])))continue;const a=tf(x,y,z),b=tf(x+f[0],y+f[1],z+f[2]);let nx=b[0]-a[0],ny=b[1]-a[1],nz=b[2]-a[2];const l=Math.hypot(nx,ny,nz)||1;nx/=l;ny/=l;nz/=l;
-   const o=pos.length/3,r=((c>>16)&255)/255*f[4],g=((c>>8)&255)/255*f[4],bb=(c&255)/255*f[4];
-   for(const k of f[3]){const p=tf(x+k[0],y+k[1],z+k[2]);pos.push(p[0],p[1],p[2]);nor.push(nx,ny,nz);col.push(r,g,bb)}idx.push(o,o+1,o+2,o,o+2,o+3)}}
+   const o=pos.length/3,sh=f[4]*jit,r=((c>>16)&255)/255*sh,g=((c>>8)&255)/255*sh,bb=(c&255)/255*sh,n=[f[0],f[1],f[2]],T=[0,1,2].filter(i=>n[i]===0),ao=[];
+   for(const k of f[3]){let lv=3;if(!lit){const base=[x+n[0],y+n[1],z+n[2]],du=[0,0,0],dv=[0,0,0];du[T[0]]=k[T[0]]?1:-1;dv[T[1]]=k[T[1]]?1:-1;
+     const s1=occ.has((base[0]+du[0])+','+(base[1]+du[1])+','+(base[2]+du[2])),s2=occ.has((base[0]+dv[0])+','+(base[1]+dv[1])+','+(base[2]+dv[2])),cc=occ.has((base[0]+du[0]+dv[0])+','+(base[1]+du[1]+dv[1])+','+(base[2]+du[2]+dv[2]));
+     lv=s1&&s2?0:3-((s1?1:0)+(s2?1:0)+(cc?1:0))}
+    ao.push(lv);const p=tf(x+k[0],y+k[1],z+k[2]),m=VXAO[lv];pos.push(p[0],p[1],p[2]);nor.push(nx,ny,nz);col.push(r*m,g*m,bb*m)}
+   if(ao[1]+ao[3]>ao[0]+ao[2])idx.push(o+1,o+2,o+3,o+1,o+3,o);else idx.push(o,o+1,o+2,o,o+2,o+3)}}
  if(!pos.length)return null;const G=new THREE.BufferGeometry();G.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));G.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3));G.setAttribute('color',new THREE.Float32BufferAttribute(col,3));G.setIndex(idx);G.computeBoundingSphere();return G}
 var vxLM=null,vxGM=null;function vxLam(){return vxLM||(vxLM=new THREE.MeshLambertMaterial({vertexColors:true}))}function vxGlow(){return vxGM||(vxGM=new THREE.MeshBasicMaterial({vertexColors:true}))}
 // character: front faces +z in voxel space; mapped so front faces -z in the world (like the old rig)
-function vxHero(o){const v=vxMap(),hc=o.hair,sk=o.skin,jc=o.coat,tr=o.trim,pt=o.pants||0x24222c;
- [[1,'legA'],[4,'legB']].forEach(q=>{const x0=q[0];v.P=q[1];v.box(x0,0,1,x0+2,0,4,0xefe8f0);v.box(x0,1,1,x0+2,1,4,o.shoe||0x1c1622);if(o.shoeGlow)v.glow(x0+1,1,4,o.shoeGlow);else v.set(x0+1,1,4,o.shoeAcc||0x8a1a2e);v.box(x0,2,1,x0+2,4,4,pt);if(o.cargo)v.set(x0===1?1:6,3,3,0x3a3846)});
+function vxHero(o){const v=vxMap(),hc=o.hair,sk=o.skin,jc=o.coat,tr=o.trim,pt=o.pants||0x24222c,sh=o.shoe||0x1c1622;
+ [[1,'legA'],[4,'legB']].forEach(q=>{const x0=q[0];v.P=q[1];v.box(x0,0,1,x0+2,0,5,0xefe8f0);v.box(x0,1,1,x0+2,1,5,sh);if(o.shoeGlow)v.glow(x0+1,1,5,o.shoeGlow);else v.set(x0+1,1,5,o.shoeAcc||0x8a1a2e);v.box(x0,2,1,x0+2,4,4,pt);if(o.cargo)v.set(x0===1?1:6,3,3,0x3a3846)});
  v.P='body';v.box(1,5,1,6,5,4,0x2a2420);v.set(3,5,4,0xa0a0b0);v.box(1,6,1,6,9,4,jc);v.box(3,6,4,4,9,4,o.tee||0x2a1a24);[2,5].forEach(x=>{for(let y=6;y<=9;y++)v.set(x,y,4,tr)});
  if(o.pendant){v.set(3,8,4,0xdfe3ee);v.set(4,8,4,0xb8bcc8);v.glow(3,7,4,o.gem||0xdfe3ee)}if(o.brooch)v.glow(3,8,4,o.brooch);if(o.pack)v.box(2,5,0,5,9,0,0x2c2a34);
- [[0,'armA'],[7,'armB']].forEach(q=>{const x=q[0];v.P=q[1];v.box(x,6,2,x,9,3,jc);v.box(x,5,2,x,5,3,o.glove||jc);v.set(x,4,2,o.claw?0xcfc6b0:sk);v.set(x,4,3,o.claw?0xcfc6b0:sk);if(o.claw)v.set(x,3,3,0xcfc6b0)});
+ // arms are two blocks wide, with a cuff and a 2x2 hand
+ [[-1,0,'armA'],[7,8,'armB']].forEach(q=>{const a=q[0],b=q[1];v.P=q[2];v.box(a,6,2,b,9,3,jc);v.box(a,6,2,b,6,3,o.cuff||tr);v.box(a,5,2,b,5,3,o.glove||jc);v.box(a,4,2,b,4,3,o.claw?0xcfc6b0:sk);if(o.claw){v.set(a,3,3,0xcfc6b0);v.set(b,3,3,0xcfc6b0)}});
  v.P='body';v.box(1,10,0,6,10,5,o.hood||tr);
  v.P='head';v.box(0,11,0,7,17,6,sk);
- [[1,2],[5,6]].forEach(e=>{for(let y=13;y<=15;y++){v.set(e[0],y,6,0xffffff);v.set(e[1],y,6,0xffffff)}});
- v.P='eye';[2,5].forEach(x=>{v.set(x,13,6,0xffffff);v.set(x,14,6,0xffffff)});
- v.P='head';v.set(3,12,6,0x6a2a32);v.set(4,12,6,0x6a2a32);if(o.fang)v.set(4,11,6,0xffffff);
- if(o.mask)[0,3,4,7].forEach(x=>{for(let y=13;y<=15;y++)v.set(x,y,6,0x0a0a12)});
- v.box(0,18,0,7,19,6,hc);v.box(0,12,0,7,17,1,hc);v.box(0,15,0,0,17,4,hc);v.box(7,15,0,7,17,4,hc);v.box(0,17,6,7,17,6,hc);[1,2,5,6].forEach(x=>v.set(x,16,6,hc));
+ // rounded jaw and cheeks (the face itself is the pixel-art plate added in vxRig)
+ for(let z=0;z<=6;z++){v.del(0,11,z);v.del(7,11,z)}for(let y=12;y<=13;y++){v.del(0,y,6);v.del(7,y,6)}
+ if(o.mask)[0,3,4,7].forEach(x=>{for(let y=13;y<=15;y++)if(!(y<14&&(x===0||x===7)))v.set(x,y,6,0x0a0a12)});
+ v.box(0,18,0,7,19,6,hc);v.box(0,12,0,7,17,1,hc);v.box(0,15,0,0,17,4,hc);v.box(7,15,0,7,17,4,hc);v.box(0,17,6,7,17,6,hc);
  if(o.style==='messy'){[[0,20,1],[2,20,0],[3,21,2],[5,20,1],[6,20,3],[1,20,4],[4,20,5],[7,20,5],[3,20,4],[6,21,1],[2,21,3]].forEach(p=>v.set(p[0],p[1],p[2],hc));[0,3,7].forEach(x=>v.set(x,16,6,hc));v.set(-1,17,3,hc);v.set(-1,16,2,hc);v.set(8,17,2,hc);v.set(8,16,3,hc)}
- if(o.style==='long'){v.box(-1,7,0,-1,18,4,hc);v.box(8,7,0,8,18,4,hc);v.box(0,7,0,7,11,0,hc)}
+ if(o.style==='long'){v.box(-1,10,0,-1,18,4,hc);v.box(8,10,0,8,18,4,hc);v.box(0,7,0,7,11,0,hc)}
  if(o.style==='bun'){v.box(2,20,1,5,21,4,hc)}
  if(o.style==='slick'){v.box(0,20,0,7,20,3,hc)}
  if(o.ears){[-1,8].forEach(x=>{v.set(x,14,3,sk);v.set(x,15,3,sk);v.set(x,16,2,sk)})}
@@ -251,63 +291,123 @@ function vxHero(o){const v=vxMap(),hc=o.hair,sk=o.skin,jc=o.coat,tr=o.trim,pt=o.
  if(o.hat==='straw'){v.box(-2,20,-2,9,20,8,0xd8b060);v.box(1,21,1,6,22,5,0xd8b060);v.box(1,21,1,6,21,5,0x8a2a1a);for(let x=1;x<=6;x++)v.glow(x,21,5,0x40ff90)}
  if(o.crown){v.box(1,20,1,6,20,5,0xd9b04a);[1,3,4,6].forEach(x=>v.set(x,21,3,0xd9b04a));v.glow(3,21,5,0xff2a3a)}
  if(o.horns){[[1,-1],[6,1]].forEach(q=>{v.set(q[0],20,3,0x3a2a48);v.set(q[0],21,3,0x3a2a48);v.set(q[0]+q[1],22,3,0x4a3a58);v.set(q[0]+q[1],23,3,0x5a4a68)})}
- v.P='armB';
- if(o.prop==='chalice'){v.box(8,6,3,9,7,4,0xd9b04a);v.set(8,5,3,0xd9b04a);v.box(8,4,3,9,4,4,0xd9b04a);v.glow(8,7,3,0xff2a4a);v.glow(9,7,4,0xff2a4a)}
- if(o.prop==='book'){v.box(8,4,2,8,7,4,0x3a2a5a);v.glow(8,6,3,0xb07aff);v.glow(8,5,4,0xb07aff)}
- if(o.prop==='sword'){for(let y=5;y<=13;y++)v.glow(8,y,3,y>11?0xffffff:0xbfeaff);v.box(8,4,2,8,4,4,0xd9b04a)}
- if(o.prop==='brush'){v.box(8,3,3,8,9,3,0x8a5a3a);v.glow(8,10,3,0xff4ad0);v.glow(8,11,3,0xff8ae0)}
- if(o.prop==='glass'){v.box(8,4,3,8,4,3,0xe8e0c0);v.glow(8,5,3,0xffd84a);v.glow(8,6,3,0xffd84a);v.glow(8,7,3,0xfff0b0)}
- if(o.prop==='cane'){v.box(8,0,3,8,8,3,0x2a1a14);v.glow(8,9,3,0xffb04a)}
+ v.P='armB';// props sit just outside the (now wider) right hand
+ if(o.prop==='chalice'){v.box(9,6,3,10,7,4,0xd9b04a);v.set(9,5,3,0xd9b04a);v.box(9,4,3,10,4,4,0xd9b04a);v.glow(9,7,3,0xff2a4a);v.glow(10,7,4,0xff2a4a)}
+ if(o.prop==='book'){v.box(9,4,2,9,7,4,0x3a2a5a);v.glow(9,6,3,0xb07aff);v.glow(9,5,4,0xb07aff)}
+ if(o.prop==='sword'){for(let y=5;y<=13;y++)v.glow(9,y,3,y>11?0xffffff:0xbfeaff);v.box(9,4,2,9,4,4,0xd9b04a)}
+ if(o.prop==='brush'){v.box(9,3,3,9,9,3,0x8a5a3a);v.glow(9,10,3,0xff4ad0);v.glow(9,11,3,0xff8ae0)}
+ if(o.prop==='glass'){v.box(9,4,3,9,4,3,0xe8e0c0);v.glow(9,5,3,0xffd84a);v.glow(9,6,3,0xffd84a);v.glow(9,7,3,0xfff0b0)}
+ if(o.prop==='cane'){v.box(9,0,3,9,8,3,0x2a1a14);v.glow(9,9,3,0xffb04a)}
  if(o.cape){v.P='cape';v.box(0,1,-1,7,9,-1,o.cape);v.box(-1,8,-1,8,9,-1,o.capeIn||o.cape)}
  return v}
-var VXU=.12,VXPV={body:[4,0,3],head:[4,11,3.5],legA:[2.5,5,3],legB:[5.5,5,3],armA:[.5,10,3],armB:[7.5,10,3],cape:[4,10,-.5]};
+// ---- pixel-art face: 32x24 px plate over voxel rows y11..16 (4 px per block). Pure function: returns RGBA + emissive arrays.
+var VXFW=32,VXFH=24;
+function vxFacePx(o,ex,gx,glow){const W=VXFW,H=VXFH,D=new Uint8ClampedArray(W*H*4),E=new Uint8ClampedArray(W*H*4);
+ const hex=c=>[(c>>16)&255,(c>>8)&255,c&255],put=(x,y,c,em)=>{if(x<0||y<0||x>=W||y>=H)return;const i=(y*W+x)*4;D[i]=c[0];D[i+1]=c[1];D[i+2]=c[2];D[i+3]=255;if(em){E[i]=c[0];E[i+1]=c[1];E[i+2]=c[2];E[i+3]=255}},rect=(x,y,w,h,c,em)=>{for(let j=0;j<h;j++)for(let i=0;i<w;i++)put(x+i,y+j,c,em)};
+ const scl=[244,238,244],pup=[20,8,12],hil=[255,255,255],lash=[24,12,20],mo=[90,26,36],tooth=[255,255,255],brow=hex(o.brow||o.hair||0x16121c).map(v=>v*.8|0),iris=glow?[255,48,64]:hex(o.eye||0x8a1a28);
+ const E0=[4,20];// left edge of each eye (px), eyes are 8 px wide
+ const g=Math.max(-1,Math.min(1,gx|0))*2;
+ E0.forEach((x0,side)=>{const inner=side===0?1:-1;// inner = toward the nose
+  if(ex==='blink'){rect(x0+1,12,6,2,lash);return}
+  if(ex==='ko'){for(let i=0;i<6;i++){put(x0+1+i,7+i,lash);put(x0+6-i,7+i,lash);put(x0+1+i,8+i,lash);put(x0+6-i,8+i,lash)}return}
+  if(ex==='grin'){[[1,11],[2,10],[3,9],[4,9],[5,10],[6,11]].forEach(p=>{put(x0+p[0],p[1],lash);put(x0+p[0],p[1]+1,lash)});return}
+  const top=ex==='scared'?4:ex==='focus'?8:6,bot=ex==='scared'?15:ex==='focus'?13:14;
+  for(let y=top;y<=bot;y++)for(let i=0;i<8;i++){const corner=(y===top||y===bot)&&(i===0||i===7);if(!corner)put(x0+i,y,scl)}
+  const iw=4,ix=x0+2+g,mid=(top+bot)>>1,it=ex==='scared'?mid-1:top+1,ib=ex==='scared'?mid+2:bot-1;rect(ix,it,iw,ib-it+1,iris,glow);
+  if(ex==='scared')rect(ix+1,it+1,2,2,pup);else rect(ix+1,it+2,2,Math.max(1,ib-it-3),pup);
+  put(ix,it,hil);put(ix+1,it,hil);if(ex!=='focus')put(ix,it+1,hil);
+  for(let i=1;i<7;i++)put(x0+i,top-1,lash);// upper lid line
+  if(o.lash){put(side===0?x0-1:x0+8,top,lash);put(side===0?x0-1:x0+8,top-1,lash)}
+  // brows: rows 0..3, slant depends on expression
+  for(let i=0;i<8;i++){const t=side===0?i/7:(7-i)/7;let y=1;if(ex==='focus')y=Math.round(0+t*2.4);else if(ex==='scared')y=Math.round(2-t*2);else if(ex==='idle')y=1+(side===1&&i>4?-1:0);
+   put(x0+i,y,brow);put(x0+i,y+1,brow)}});
+ // mouth: cols 12..19, rows 16..21; fang below it
+ if(ex==='scared'){rect(14,16,4,4,mo);rect(13,17,1,2,mo);rect(18,17,1,2,mo);put(16,16,tooth);put(15,16,tooth)}
+ else if(ex==='grin'){for(let i=11;i<=20;i++)put(i,i<13||i>18?17:18,mo);rect(12,19,8,1,mo);put(13,18,tooth);put(18,18,tooth);put(13,19,tooth);put(18,19,tooth)}
+ else if(ex==='ko'){[[12,18],[13,17],[14,18],[15,17],[16,18],[17,17],[18,18],[19,17]].forEach(p=>put(p[0],p[1],mo))}
+ else if(ex==='focus'){rect(13,18,6,1,mo);if(o.fang){put(17,19,tooth);put(17,20,tooth)}}
+ else{rect(13,18,5,1,mo);put(18,17,mo);if(o.fang){put(16,19,tooth);put(16,20,tooth)}}
+ if(o.blush&&(ex==='idle'||ex==='grin')){rect(2,16,3,1,hex(o.blush));rect(27,16,3,1,hex(o.blush))}
+ return{D,E}}
+function vxFaceNew(o){const W=VXFW,H=VXFH,mk=()=>{const c=document.createElement('canvas');c.width=W;c.height=H;return c},cv=mk(),ce=mk(),x=cv.getContext('2d'),xe=ce.getContext('2d'),tex=new THREE.CanvasTexture(cv),tex2=new THREE.CanvasTexture(ce);
+ [tex,tex2].forEach(t=>{t.magFilter=THREE.NearestFilter;t.minFilter=THREE.NearestFilter;t.generateMipmaps=false});
+ const mat=new THREE.MeshLambertMaterial({map:tex,alphaTest:.5,emissive:0xffffff,emissiveMap:tex2,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-2}),mesh=new THREE.Mesh(new THREE.PlaneGeometry(8*VXU,6*VXU),mat);
+ const F={mesh,mat,key:'',ex:'idle',bt:1.5+Math.random()*2,bl:0,grin:0,last:0,set(ex,gx,glow){const k=ex+'|'+gx+'|'+(glow?1:0);if(k===F.key)return;F.key=k;F.ex=ex;const r=vxFacePx(o,ex,gx,glow);
+  const a=x.createImageData(W,H);a.data.set(r.D);x.putImageData(a,0,0);const b=xe.createImageData(W,H);b.data.set(r.E);xe.putImageData(b,0,0);tex.needsUpdate=true;tex2.needsUpdate=true}};
+ F.set('idle',0,!!o.glowEyes);return F}
+var VXU=.12,VXPV={body:[4,0,3],head:[4,11,3.5],legA:[2.5,5,3],legB:[5.5,5,3],armA:[0,10,3],armB:[8,10,3],cape:[4,10,-.5]};
 function vxTf(cx,cy,cz,u){return(x,y,z)=>[-(x-cx)*u,(y-cy)*u,-(z-cz)*u]}
-function vxRig(o,mat,eyeMat,glowMat){glowMat=glowMat||vxGlow();const v=vxHero(o),root=new THREE.Group(),parts={},B=vxTf(4,0,3,VXU);
+function vxRig(o,mat,eyeMat,glowMat){glowMat=glowMat||vxGlow();const v=vxHero(o),root=new THREE.Group(),parts={},B=vxTf(4,0,3,VXU);let face=null;
  for(const k in VXPV){const pv=VXPV[k],grp=new THREE.Group(),w=B(pv[0],pv[1],pv[2]);grp.position.set(w[0],w[1],w[2]);root.add(grp);parts[k]=grp;
   const g=vxGeo(v,k,vxTf(pv[0],pv[1],pv[2],VXU));if(g)grp.add(new THREE.Mesh(g,mat));const gg=vxGeo(v,k+'*',vxTf(pv[0],pv[1],pv[2],VXU));if(gg)grp.add(new THREE.Mesh(gg,glowMat));
-  if(k==='head'){const e=vxGeo(v,'eye',vxTf(pv[0],pv[1],pv[2],VXU));if(e)grp.add(new THREE.Mesh(e,eyeMat))}}
- return{root,parts}}
+  if(k==='head'){face=vxFaceNew(o);const p=vxTf(pv[0],pv[1],pv[2],VXU)(4,14,7.02);face.mesh.position.set(p[0],p[1],p[2]);face.mesh.rotation.y=Math.PI;grp.add(face.mesh)}}
+ return{root,parts,face}}
 function vxCfg(i){const c=CH[i]||CH[0],x=c.x||XS[i]||[],h=c.hero,o={hair:c.hair,coat:c.coat,trim:c.cape,hood:c.lin,skin:c.skin,style:x.includes('lh')?'long':'slick'};
- const H={bran:{hair:0x16121c,coat:0x17141e,trim:0x8a1a2e,hood:0x8a1a2e,skin:0xd8c0b0,style:'messy',pendant:1,gem:0x3ab8ff,shoeGlow:0xff2a44,pack:1,cargo:1,fang:1,glove:0x0d0b12,aura:[0xff2a44,0x3ab8ff]},
-  camilla:{style:'long',prop:'chalice',coat:0x3a0a2e,trim:0x9a2a8a,hood:0x5a0a3a,hair:0x1a0a14,cape:0xb0123a,capeIn:0x6a1a6a,brooch:0xff5aa0,aura:[0xff3a7a,0xb04aff]},
-  kran:{style:'slick',prop:'book',coat:0x24163e,trim:0x6a1a2a,hood:0x3a1a52,aura:[0xa070ff,0xc02a4a]},
-  dylan:{style:'messy',hat:'straw',coat:0x1f4a26,trim:0x2a7a3a,hood:0x153a1c,aura:[0x40ff80,0x20c060]},
-  sophia:{style:'long',prop:'sword',coat:0x1c2638,trim:0xc8d8f0,hood:0x8aa8d0,hair:0xeef4ff,aura:[0x9ae0ff,0xffffff]},
-  annabelle:{style:'bun',prop:'brush',coat:0x1e1236,trim:0xd02a9a,hood:0x4a1a6a,aura:[0xff4ad0,0x9a5aff]},
-  kirsten:{style:'long',prop:'glass',aura:[0xffb0e0,0xffd84a]},leroy:{style:'slick',hat:'fez',prop:'cane',aura:[0xffb04a,0x3ad0d0]}};
+ const H={bran:{hair:0x16121c,coat:0x17141e,trim:0x8a1a2e,hood:0x8a1a2e,skin:0xd8c0b0,style:'messy',pendant:1,gem:0x3ab8ff,shoeGlow:0xff2a44,pack:1,cargo:1,fang:1,glove:0x0d0b12,cuff:0x8a1a2e,eye:0x9a1a28,aura:[0xff2a44,0x3ab8ff]},
+  camilla:{style:'long',prop:'chalice',coat:0x3a0a2e,trim:0x9a2a8a,hood:0x5a0a3a,hair:0x1a0a14,cape:0xb0123a,capeIn:0x6a1a6a,brooch:0xff5aa0,eye:0xc0103a,lash:1,blush:0xe8a0b0,fang:1,aura:[0xff3a7a,0xb04aff]},
+  kran:{style:'slick',prop:'book',coat:0x24163e,trim:0x6a1a2a,hood:0x3a1a52,eye:0x8a4aff,aura:[0xa070ff,0xc02a4a]},
+  dylan:{style:'messy',hat:'straw',coat:0x1f4a26,trim:0x2a7a3a,hood:0x153a1c,eye:0x2ab060,blush:0xd89a80,aura:[0x40ff80,0x20c060]},
+  sophia:{style:'long',prop:'sword',coat:0x1c2638,trim:0xc8d8f0,hood:0x8aa8d0,hair:0xeef4ff,brow:0x8a9ab0,eye:0x4ab8ff,lash:1,aura:[0x9ae0ff,0xffffff]},
+  annabelle:{style:'bun',prop:'brush',coat:0x1e1236,trim:0xd02a9a,hood:0x4a1a6a,eye:0xd03aa8,lash:1,blush:0xe890c0,aura:[0xff4ad0,0x9a5aff]},
+  kirsten:{style:'long',prop:'glass',eye:0xc08a20,lash:1,blush:0xf0a0b0,aura:[0xffb0e0,0xffd84a]},leroy:{style:'slick',hat:'fez',prop:'cane',eye:0xc0701a,aura:[0xffb04a,0x3ad0d0]}};
  if(h&&H[h])return Object.assign(o,H[h]);
- o.cape=c.cape;o.capeIn=c.lin;o.fang=1;o.glowEyes=1;o.tee=0xf0e8f0;o.aura=[vxBright(c.cape),0xff2a44];
+ o.cape=c.cape;o.capeIn=c.lin;o.fang=1;o.glowEyes=1;o.tee=0xf0e8f0;o.aura=[vxBright(c.cape),0xff2a44];if(x.includes('lh'))o.lash=1;
  if(x.includes('hat'))o.hat='top';if(x.includes('cr'))o.crown=1;if(x.includes('hn'))o.horns=1;if(x.includes('mk'))o.mask=1;if(x.includes('oe'))o.ears=1;if(x.includes('cl'))o.claw=1;return o}
 function vxBright(c){let r=(c>>16)&255,g=(c>>8)&255,b=c&255;const m=Math.max(r,g,b,1),k=255/m;return((Math.min(255,r*k)|0)<<16)|((Math.min(255,g*k)|0)<<8)|(Math.min(255,b*k)|0)}
 // --- aura: square energy fragments that break off the player (one reusable Points object) ---
 var VXA=null;
 function vxAuraInit(){const N=40,pos=new Float32Array(N*3),col=new Float32Array(N*3),G=new THREE.BufferGeometry();G.setAttribute('position',new THREE.BufferAttribute(pos,3));G.setAttribute('color',new THREE.BufferAttribute(col,3));
- const m=new THREE.PointsMaterial({size:.1,vertexColors:true,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true}),pts=new THREE.Points(G,m);pts.frustumCulled=false;
+ const m=new THREE.PointsMaterial({size:.07,vertexColors:true,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true}),pts=new THREE.Points(G,m);pts.frustumCulled=false;
  VXA={N,pos,col,G,m,pts,v:new Float32Array(N*3),life:new Float32Array(N),max:new Float32Array(N),ci:new Uint8Array(N),c:[[1,.2,.3],[.2,.7,1]],last:performance.now()/1000,py:0};for(let i=0;i<N;i++){VXA.life[i]=0}}
-function vxAuraSpawn(i,burst){const A=VXA,s=Math.random()<.5?-1:1,o=i*3;A.pos[o]=s*(.25+Math.random()*.35);A.pos[o+1]=.15+Math.random()*2.5;A.pos[o+2]=(Math.random()-.5)*.6;
+function vxAuraSpawn(i,burst){const A=VXA,s=Math.random()<.5?-1:1,o=i*3;A.pos[o]=s*(.3+Math.random()*.35);A.pos[o+1]=.2+Math.random()*2.4;A.pos[o+2]=(Math.random()-.2)*.6;
  const k=burst?2.6:1;A.v[o]=s*(.08+Math.random()*.3)*k;A.v[o+1]=(.12+Math.random()*.45)*k;A.v[o+2]=(Math.random()-.5)*.25*k;A.max[i]=A.life[i]=burst?.5+Math.random()*.5:.8+Math.random()*1.4;A.ci[i]=Math.random()<.68?0:1}
 function vxAuraColors(a){if(!VXA)return;const h=c=>[((c>>16)&255)/255,((c>>8)&255)/255,(c&255)/255];VXA.c=[h(a[0]),h(a[1]||a[0])]}
 function vxAuraTick(){const A=VXA;if(!A)return;const n=performance.now()/1000,dt=Math.min(.05,n-A.last);A.last=n;
  const show=P.visible&&state!=='bat'&&(typeof batT==='undefined'||batT<=0);A.pts.visible=show;if(!show)return;
- const run=state==='play',idle=!run,drift=run?1.6:0,lim=run?28:A.N;
- if(run&&p.y>.05&&A.py<=.05)for(let k=0;k<10;k++)vxAuraSpawn((Math.random()*A.N)|0,true);A.py=p.y;
+ const run=state==='play',idle=!run,drift=run?1.6:0,lim=run?16:26,bright=.72;
+ if(run&&p.y>.05&&A.py<=.05)for(let k=0;k<8;k++)vxAuraSpawn((Math.random()*lim)|0,true);A.py=p.y;
  for(let i=0;i<A.N;i++){const o=i*3;if(i>=lim){A.col[o]=A.col[o+1]=A.col[o+2]=0;continue}A.life[i]-=dt;if(A.life[i]<=0)vxAuraSpawn(i,false);
   A.pos[o]+=A.v[o]*dt;A.pos[o+1]+=A.v[o+1]*dt;A.pos[o+2]+=(A.v[o+2]+drift)*dt;
   if(idle){const a=n*.8+i;A.pos[o]+=Math.cos(a)*.08*dt;A.pos[o+2]+=Math.sin(a)*.08*dt}
-  const f=A.life[i]/A.max[i],fl=Math.random()<.06?.3:1,fade=Math.min(1,f*2.2)*Math.min(1,(1-f)*6)*fl,c=A.c[A.ci[i]];A.col[o]=c[0]*fade;A.col[o+1]=c[1]*fade;A.col[o+2]=c[2]*fade}
- A.m.size=idle?.12:.09;A.G.attributes.position.needsUpdate=true;A.G.attributes.color.needsUpdate=true}
+  const f=A.life[i]/A.max[i],fl=Math.random()<.06?.3:1,fade=Math.min(1,f*2.2)*Math.min(1,(1-f)*6)*fl*bright,c=A.c[A.ci[i]];A.col[o]=c[0]*fade;A.col[o+1]=c[1]*fade;A.col[o+2]=c[2]*fade}
+ A.m.size=idle?.075:.06;A.G.attributes.position.needsUpdate=true;A.G.attributes.color.needsUpdate=true}
 // --- player ---
 var VXP=null,VXOLD=null,vxCur=null,vxCache={};
 function vxApply(i){if(!VXOLD){VXOLD=[];P.traverse(o=>{if(o.isMesh)VXOLD.push(o)})}
  if(VXP)P.remove(VXP.root);
- if(!vxCache[i]){const o=vxCfg(i),m=new THREE.MeshLambertMaterial({vertexColors:true}),e=new THREE.MeshBasicMaterial({vertexColors:true,color:0x8a1a28});vxCache[i]={r:vxRig(o,m,e,vxGlow()),e,glow:!!o.glowEyes}}
- vxCur=vxCache[i];VXP=vxCur.r;P.add(VXP.root);if(!VXA){vxAuraInit();P.add(VXA.pts)}const au=vxCfg(i).aura||[0xff2a44,0xff2a44];vxAuraColors(au);try{pl.color.setHex(au[0])}catch(e){}vxTick()}
-function vxTick(){if(!VXP)return;for(const o of VXOLD)o.visible=false;const q=VXP.parts;
- q.legA.rotation.x=lR.rotation.x;q.legB.rotation.x=lL.rotation.x;q.armA.rotation.x=aR.rotation.x;q.armB.rotation.x=aL.rotation.x;q.head.rotation.z=head.rotation.z;q.cape.rotation.x=cape.rotation.x*.7;
- if(state==='menu'||state==='select'||state==='store'){const n=performance.now()/1000;q.legA.rotation.x=q.legB.rotation.x=0;q.armA.rotation.x=Math.sin(n*1.3)*.08;q.armB.rotation.x=-Math.sin(n*1.3)*.08;q.armA.rotation.z=.06;q.armB.rotation.z=-.06;q.head.rotation.y=Math.sin(n*.5)*.25;q.head.rotation.z=Math.sin(n*.7)*.04;q.cape.rotation.x=.12+Math.sin(n*1.7)*.06;VXP.root.position.y=Math.sin(n*1.6)*.05}else{q.armA.rotation.z=q.armB.rotation.z=0;q.head.rotation.y=0;VXP.root.position.y=0}
+ if(!vxCache[i]){const o=vxCfg(i),m=new THREE.MeshLambertMaterial({vertexColors:true});vxCache[i]={r:vxRig(o,m,null,vxGlow()),glow:!!o.glowEyes}}
+ vxCur=vxCache[i];VXP=vxCur.r;P.add(VXP.root);if(!VXA){vxAuraInit();P.add(VXA.pts)}const au=vxCfg(i).aura||[0xff2a44,0xff2a44];vxAuraColors(au);try{pl.color.setHex(au[0])}catch(e){}ui2Face(i);ui3Face();if(state==='select')ui4Scroll();vxTick()}
+// --- animation: blended poses (visual only; gameplay position, hit boxes and timing are untouched) ---
+var VXAN={ph:0,w:{run:0,air:0,slide:0,idle:1,dead:0},sq:0,py:0,last:0,pw:0};
+//          legA   legB   armA   armB   armAz  armBz  headX  headZ  headY  rootX  cape
+function vxPose(k,s,n,spdv,rise){switch(k){
+ case 'run':return[s*.85,-s*.85,-s*.75,s*.75,.08,-.08,.05,s*.04,0,-.1-.004*Math.min(spdv,30),.3+Math.min(spdv,36)*.012+Math.sin(2*VXAN.ph)*.06];
+ case 'air':return[-.75,.45,-2.0,-1.7,.25,-.25,-.05,0,0,rise?.06:-.08,.7];
+ case 'slide':return[.15,-.1,1.5,1.3,.1,-.1,.5,0,0,0,.9];
+ case 'dead':return[.3,-.2,1.2,1.0,.4,-.4,.3,0,0,0,.5];
+ default:return[0,0,Math.sin(n*1.3)*.08,-Math.sin(n*1.3)*.08,.06,-.06,0,Math.sin(n*.7)*.04,Math.sin(n*.5)*.25,0,.12+Math.sin(n*1.7)*.06]}}
+function vxTick(){if(!VXP)return;for(const o of VXOLD)o.visible=false;const q=VXP.parts,A=VXAN,n=performance.now()/1000,dt=A.last?Math.min(.05,Math.max(0,n-A.last)):0;A.last=n;
+ const play=state==='play',air=p.y>.01,slid=play&&sl>0&&!air,spdv=typeof spd==='number'?spd:10;
+ const tw={run:play&&!air&&!slid?1:0,air:play&&air?1:0,slide:slid?1:0,idle:play||state==='dead'?0:1,dead:state==='dead'?1:0};
+ for(const k in A.w)A.w[k]+=(tw[k]-A.w[k])*Math.min(1,dt*12);
+ if(play)A.ph+=dt*(9+Math.min(6,spdv*.22));
+ const s=Math.sin(A.ph),rise=p.y>A.py,acc=[0,0,0,0,0,0,0,0,0,0,0];let tot=0;
+ for(const k in A.w){const w=A.w[k];if(w<.001)continue;const v=vxPose(k,s,n,spdv,rise);for(let i=0;i<11;i++)acc[i]+=v[i]*w;tot+=w}
+ if(tot>0)for(let i=0;i<11;i++)acc[i]/=tot;
+ q.legA.rotation.x=acc[0];q.legB.rotation.x=acc[1];q.armA.rotation.x=acc[2];q.armB.rotation.x=acc[3];q.armA.rotation.z=acc[4];q.armB.rotation.z=acc[5];
+ q.head.rotation.set(acc[6],acc[8],acc[7]);VXP.root.rotation.x=acc[9];q.cape.rotation.x=acc[10];
+ // squash on landing, breathing while idle
+ if(play&&A.py>.15&&p.y<=.01)A.sq=1;A.py=p.y;A.sq=Math.max(0,A.sq-dt/.2);const k=A.sq,br=1+Math.sin(n*2.2)*.012*A.w.idle;
+ VXP.root.scale.set(1+.08*k,(1-.15*k)*br,1+.08*k);VXP.root.position.y=Math.sin(n*1.6)*.05*A.w.idle;
  vxAuraTick();
- let act=false;try{const h=CH[ci].hero;act=!!h&&state==='play'&&(actLeft(h)>0||ST.cd<=0)}catch(e){}
- vxCur.e.color.setHex(vxCur.glow||act?0xff3a48:0x8a1a28)}
+ // face: expression, blink, gaze, glow
+ const F=VXP.face;if(F){let act=false;try{const h=CH[ci].hero;act=!!h&&play&&(actLeft(h)>0||ST.cd<=0)}catch(e){}
+  const pw=(typeof cT==='number'?cT:0)+(typeof gT==='number'?gT:0)+(typeof magT==='number'?magT:0)+(typeof swordT==='number'?swordT:0);if(pw>A.pw+.5)F.grin=.9;A.pw=pw;F.grin=Math.max(0,F.grin-dt);
+  let ex='idle';if(play){ex=(typeof strikes==='number'&&strikes>0)?'scared':(F.grin>0||(typeof killT==='number'&&killT>0))?'grin':'focus'}else if(state==='dead')ex='ko';
+  F.bt-=dt;if(F.bt<=0){F.bl=.13;F.bt=(Math.random()<.2?.35:2.4+Math.random()*3.6)}if(F.bl>0){F.bl-=dt;if(ex!=='ko'&&ex!=='grin')ex='blink'}
+  let gx=0;if(play){const d=(typeof LN==='object'?LN[ln]:0)-p.x;gx=Math.abs(d)>.3?(d<0?1:-1):0}else gx=Math.round(Math.sin(n*.5)*1.2);
+  F.set(ex,gx,vxCur.glow||act)}
+ ui2Tick();ui3Tick()}
 // --- wolf obstacle (faces +x in voxel space) ---
 function vxWolf(){const v=vxMap(),f=0x2a2640,d=0x1a1826,h=0x5a48a8,r=0xd01a30;
  v.box(0,7,1,11,11,5,f);v.box(1,12,1,10,12,5,h);v.box(6,13,2,10,13,4,h);v.box(9,7,0,12,12,6,f);v.box(10,13,1,12,13,5,h);
@@ -360,7 +460,9 @@ function ui2Tick(){if(!UI2)return;const U=UI2;
  const d=Math.floor(dist).toLocaleString()+' m';if(U.dist.textContent!==d)U.dist.textContent=d}
 var vxFaceC={};function vxFaceURL(i){if(vxFaceC[i])return vxFaceC[i];const v=vxHero(vxCfg(i)),best=new Map();for(const q of v.m.values()){if(q[1]<10)continue;const k=q[0]+','+q[1],b=best.get(k);if(!b||q[2]>b[2])best.set(k,q)}
  const pal=c=>'#'+c.toString(16).padStart(6,'0');let x0=99,x1=-99,y0=99,y1=-99;for(const q of best.values()){x0=Math.min(x0,q[0]);x1=Math.max(x1,q[0]);y0=Math.min(y0,q[1]);y1=Math.max(y1,q[1])}
- let r='';for(const q of best.values())r+='<rect x="'+(q[0]-x0)+'" y="'+(y1-q[1])+'" width="1.04" height="1.04" fill="'+(q[4]==='eye'?(vxCfg(i).glowEyes?'#ff3a48':'#8a1a28'):pal(q[3]))+'"/>';
+ let r='';for(const q of best.values())r+='<rect x="'+(q[0]-x0)+'" y="'+(y1-q[1])+'" width="1.04" height="1.04" fill="'+pal(q[3])+'"/>';
+ {const cf=vxCfg(i),fp=vxFacePx(cf,'idle',0,!!cf.glowEyes).D;for(let ry=0;ry<VXFH;ry++){let c0=-1;for(let cx=0;cx<=VXFW;cx++){const on=cx<VXFW&&fp[(ry*VXFW+cx)*4+3]>0,same=on&&c0>=0&&fp[(ry*VXFW+cx)*4]===fp[(ry*VXFW+c0)*4]&&fp[(ry*VXFW+cx)*4+1]===fp[(ry*VXFW+c0)*4+1]&&fp[(ry*VXFW+cx)*4+2]===fp[(ry*VXFW+c0)*4+2];
+  if(c0>=0&&!same){const j=(ry*VXFW+c0)*4;r+='<rect x="'+(c0/4-x0).toFixed(2)+'" y="'+(y1-16+ry/4).toFixed(2)+'" width="'+((cx-c0)/4+.02).toFixed(2)+'" height=".27" fill="rgb('+fp[j]+','+fp[j+1]+','+fp[j+2]+')"/>';c0=-1}if(on&&c0<0)c0=cx}}}
  const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 '+(x1-x0+3)+' '+(y1-y0+3)+'" shape-rendering="crispEdges">'+r+'</svg>';return vxFaceC[i]='data:image/svg+xml,'+encodeURIComponent(svg)}
 function ui2Face(i){try{const e=document.getElementById('abi');if(e)e.style.backgroundImage='url("'+vxFaceURL(i)+'")'}catch(e){}}
 function ui4Init(){try{const cs=document.getElementById('cs');if(!cs)return;[...cs.children].forEach((b,i)=>{const c=CH[i];if(!c)return;const col='#'+c.cape.toString(16).padStart(6,'0');b.style.background='url("'+vxFaceURL(i)+'") center 7px/50px no-repeat,linear-gradient(170deg,'+col+'66,#140a1e 72%)'})}catch(e){}}
@@ -864,7 +966,7 @@ $('rt').onclick=()=>{unlock();if(vis('stp')){leaveStore();return}if(vis('pn'))$(
 // dungeons, settings, polish
 const DG=[['The Sunken Crypt',0x9a3a70,0xff3b2e],['Bone Catacombs',0x7a5a3a,0xffb060],['Whispering Graves',0x3a6a4a,0x7aff9a],['Frozen Vault',0x4a7aaa,0xa0e0ff],['Ember Forge',0xaa4a1a,0xff6a1a],['Duelists Hall',0x5a5a7a,0xc0c0ff],['Ossuary Chapel',0x8a7a3a,0xffe08a],['Midnight Palace',0x5a3aaa,0xc08aff],['Hollow Throne',0x3a3a4a,0x9a9ab0],['Eclipse Sanctum',0xaa8a2a,0xffd040]].map((a,i)=>({n:a[0],min:3*(i+1),ch:5+i,fog:a[1],sun:a[2]}));
 const V=new THREE.Group();S.add(V);V.visible=false;
-function buildVamp(g,c){while(g.children.length)g.remove(g.children[0]);const k=CH.indexOf(c),r=vxRig(vxCfg(k>=0?k:0),new THREE.MeshLambertMaterial({vertexColors:true}),new THREE.MeshBasicMaterial({vertexColors:true,color:0xff3a48}));g.add(r.root);const q=r.parts;g.userData={lL:q.legB,lR:q.legA,aL:q.armB,aR:q.armA,cape:q.cape,capeL:new THREE.Object3D(),mouth:new THREE.Object3D()}}
+function buildVamp(g,c){while(g.children.length)g.remove(g.children[0]);const k=CH.indexOf(c),r=vxRig(vxCfg(k>=0?k:0),new THREE.MeshLambertMaterial({vertexColors:true}),new THREE.MeshBasicMaterial({vertexColors:true,color:0xff3a48}));g.add(r.root);if(r.face)r.face.set('focus',0,true);const q=r.parts;g.userData={lL:q.legB,lR:q.legA,aL:q.armB,aR:q.armA,cape:q.cape,capeL:new THREE.Object3D(),mouth:new THREE.Object3D()}}
 function vAnim(rk){const u=V.userData;if(!u.lL)return;const s=Math.sin(T*(spd>10?14:9)),mv=spd>1;u.lL.rotation.x=mv?s:0;u.lR.rotation.x=mv?-s:0;u.aL.rotation.x=-1.3+(mv?s*.3:0)-rk*.8;u.aR.rotation.x=-1.3-(mv?s*.3:0)-rk*.8;u.cape.rotation.x=.3+Math.sin(T*15)*.1+Math.min(spd,36)*.012;u.capeL.rotation.x=.15+Math.sin(T*15+1)*.18;u.mouth.scale.set(1+rk*.8,1+rk*5,1);V.rotation.y=rk*2.6}
 function dgStart(){if(dg>=0){dgT=DG[dg].min*60;lastDt=-1;buildVamp(V,CH[DG[dg].ch]);S.fog.color.set(DG[dg].fog);moon.material.color.set(DG[dg].sun);halo.material.color.set(DG[dg].sun);$('dgt').style.display='block'}else{dgT=0;S.fog.color.set(0x9a3a70);moon.material.color.set(0xff3b2e);halo.material.color.set(0xff2a3a);$('dgt').style.display='none'}}
 function startDg(i){dg=i;$('pn').classList.add('h');reset();if(i>=0)sfx('dungeon')}
@@ -1247,6 +1349,185 @@ badge.addEventListener('click',function(){show(!on)});
 addEventListener('keydown',function(e){if(e.key==='`'||e.key==='F8'){e.preventDefault();show(!on)}});
 var start=/[?&]debug=1/.test(location.search);try{if(localStorage.getItem(KEY)==='1')start=true}catch(e){}
 drawErrs();if(start)show(true);
+})();
+</script>
+<style>
+/* ===== DEV STAGE 1a: Self-test + Benchmark controls (development copy only) ===== */
+#brdev-s1{border-top:1px solid #444;margin-top:6px;padding-top:6px}
+#brdev-s1 .run{color:#ffd23a}
+#brdev-s1 pre{white-space:pre-wrap;word-break:break-word;margin:6px 0 0;font:10.5px/1.45 ui-monospace,Menlo,Consolas,monospace;color:#dfe8df;max-height:38vh;overflow:auto}
+#brdev-s1 .warn{color:#ffb44a}
+#brdev-badge.paused{background:#ff9a3a}
+</style>
+<script>
+/* ===== DEV STAGE 1a: Self-test + Benchmark =====
+   Safety design:
+   - Self-test and the 30 s gameplay benchmark FREEZE localStorage writes while they run (the game's writes are recorded, not applied),
+     check that storage still equals the snapshot taken at the start, then reload the page with writes still frozen.
+     The reload discards the test run from memory; the freeze stops the game's save-on-exit (pagehide) from writing it back.
+   - The 5 s menu benchmark changes nothing, so it neither freezes nor reloads.
+   - Temporary changes (collision ignore, frame sampler) are undone in finally blocks, including on failure or Stop.
+   - No fixed randomness: overriding Math.random would affect every game system, so it is not used. Repeat a benchmark to judge variation.
+   - Results survive the reload through sessionStorage and are shown again when the menu is back. */
+(function(){
+var D=window.BR_DEV;if(!D||!D.show)return;
+var PFX=D.prefix,RKEY=PFX+'stage1a-pending',$=function(id){return document.getElementById(id)};
+var LS=null;try{LS=window.localStorage}catch(e){}
+var SSok=false;try{sessionStorage.setItem(PFX+'probe','1');sessionStorage.removeItem(PFX+'probe');SSok=true}catch(e){}
+// ---- write freeze (outermost wrapper: records the key the game asked for, before the Stage 0 guard sees it)
+var SP=Storage.prototype,ws=SP.setItem,wr=SP.removeItem,wc=SP.clear,F={on:false,ops:[]};
+SP.setItem=function(k,v){if(F.on&&this===LS){F.ops.push('set '+k);return}return ws.call(this,k,v)};
+SP.removeItem=function(k){if(F.on&&this===LS){F.ops.push('remove '+k);return}return wr.call(this,k)};
+SP.clear=function(){if(F.on&&this===LS){F.ops.push('clear');return}return wc.call(this)};
+function snap(){var o={};if(!LS)return o;for(var i=0;i<LS.length;i++){var k=Storage.prototype.key.call(LS,i);if(k&&k.indexOf(PFX)===0)o[k]=LS.getItem(k)}return o}
+function diff(a,b){var out=[];Object.keys(a).concat(Object.keys(b)).forEach(function(k){if(out.indexOf(k)<0&&a[k]!==b[k])out.push(k)});return out}
+// ---- helpers
+var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+async function waitFor(fn,ms){var t0=performance.now();while(performance.now()-t0<ms){try{if(fn())return true}catch(e){}await sleep(50)}try{return !!fn()}catch(e){return false}}
+function G(name){try{return eval(name)}catch(e){return undefined}}
+function visible(id){var e=$(id);if(!e)return false;var r=e.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(e).visibility!=='hidden'}
+function key(k){window.dispatchEvent(new KeyboardEvent('keydown',{key:k,bubbles:true}))}
+function swipe(dx,dy){var c=$('c'),x=innerWidth/2,y=innerHeight*.6,o={bubbles:true,pointerId:7,pointerType:'touch',isPrimary:true};
+ c.dispatchEvent(new PointerEvent('pointerdown',Object.assign({clientX:x,clientY:y},o)));for(var i=1;i<=4;i++)c.dispatchEvent(new PointerEvent('pointermove',Object.assign({clientX:x+dx*i/4,clientY:y+dy*i/4},o)));c.dispatchEvent(new PointerEvent('pointerup',Object.assign({clientX:x+dx,clientY:y+dy},o)))}
+function gDist(){var d=G('dist');return typeof d==='number'?Math.floor(d):NaN}
+function hudDist(){var e=$('hdist');return e?parseInt(String(e.textContent).replace(/[^0-9]/g,''),10)||0:NaN}
+function errCount(){return D.errors.reduce(function(a,e){return a+e.n},0)}
+function engine(){var T=window.THREE,rev=T&&T.REVISION;return{real:rev==='128',label:typeof rev==='string'?'Three.js r'+rev:'NOT the real Three.js (stand-in or missing)'}}
+function device(){var r=G('R'),gpu='unavailable';try{var gl=r.getContext(),ext=gl.getExtension('WEBGL_debug_renderer_info');if(ext)gpu=gl.getParameter(ext.UNMASKED_RENDERER_WEBGL);else gpu='hidden by browser ('+gl.getParameter(gl.RENDERER)+')'}catch(e){}
+ var sa=false;try{sa=!!navigator.standalone||matchMedia('(display-mode: standalone)').matches}catch(e){}
+ return ['Device: '+navigator.userAgent,'GPU: '+gpu,'Screen '+screen.width+'×'+screen.height+' · viewport '+innerWidth+'×'+innerHeight+' · devicePixelRatio '+devicePixelRatio+' · Home Screen app: '+(sa?'yes':'no'),
+  'CPU threads: '+(navigator.hardwareConcurrency||'unavailable')+' · device memory: '+(navigator.deviceMemory?navigator.deviceMemory+' GB':'unavailable')]}
+// ---- UI inside the existing overlay
+var box=document.createElement('div');box.id='brdev-s1';
+box.innerHTML='<div class="h">Stage 1a tests</div><div class="row"><button type="button" data-s="self">Self-test</button><button type="button" data-s="menu">Benchmark: menu 5s</button><button type="button" data-s="run">Benchmark: run 30s</button><button type="button" data-s="stop" hidden>Stop</button><button type="button" data-s="copy" hidden>Copy results</button></div><div id="brdev-s1-st"></div><pre id="brdev-s1-out"></pre>';
+$('brdev-panel').appendChild(box);
+var busy=false,cancel=false,lastText='';
+function btn(s){return box.querySelector('[data-s="'+s+'"]')}
+function setBusy(b,msg){busy=b;['self','menu','run'].forEach(function(s){btn(s).disabled=b});btn('stop').hidden=!b;$('brdev-s1-st').innerHTML=msg?'<span class="run">'+msg+'</span>':''}
+function out(t){lastText=t;$('brdev-s1-out').textContent=t;btn('copy').hidden=!t}
+function freezeOn(){F.on=true;F.ops=[];$('brdev-badge').classList.add('paused')}
+function finishWithReload(rep){
+ // rep: {kind,text,snapshot}. Writes stay frozen through the reload so pagehide/visibility saves cannot persist the test run.
+ out(rep.text+'\n\nReloading to restore normal play…');
+ if(SSok){try{sessionStorage.setItem(RKEY,JSON.stringify(rep))}catch(e){SSok=false}}
+ if(SSok)setTimeout(function(){location.reload()},1200);
+ else{out(rep.text+'\n\nSaving is PAUSED. This browser blocked session storage, so the page did not reload automatically. Reload the page before playing on; nothing from the test has been saved.');}
+}
+box.addEventListener('click',function(e){var s=e.target&&e.target.getAttribute&&e.target.getAttribute('data-s');if(!s)return;
+ if(s==='stop'){cancel=true;$('brdev-s1-st').innerHTML='<span class="warn">Stopping…</span>';return}
+ if(s==='copy'){var t=lastText,st=$('brdev-s1-st');try{navigator.clipboard.writeText(t).then(function(){st.innerHTML='<span class="ok">Results copied</span>'},function(){sel()})}catch(x){sel()}
+  function sel(){var r=document.createRange();r.selectNodeContents($('brdev-s1-out'));var w=getSelection();w.removeAllRanges();w.addRange(r);st.innerHTML='<span class="warn">Copy blocked: text selected, copy it manually</span>'}return}
+ if(busy)return;cancel=false;
+ if(s==='self')selfTest();else bench(s)});
+
+// ================= SELF-TEST =================
+async function selfTest(){
+ var R=[],t0=Date.now(),origHit=null,errs0=errCount(),rew0=D.rewrites,snap0=null,ran=false;
+ function rec(name,status,why){R.push({n:name,s:status,w:why||''})}
+ async function check(name,fn,needs){if(cancel){rec(name,'SKIPPED','stopped by user');return false}if(needs&&!needs()){rec(name,'SKIPPED','an earlier step it depends on failed');return false}
+  try{var r=await fn();if(r===true){rec(name,'PASS');return true}rec(name,'FAIL',typeof r==='string'?r:'condition not met');return false}catch(e){rec(name,'FAIL','error: '+(e&&e.message||e));return false}}
+ if(G('state')!=='menu'||!visible('go')){out('Self-test not started: open the main menu (Home tab) first. Nothing was changed.');return}
+ setBusy(true,'Self-test running (about 20 s). Please do not touch the screen.');
+ try{
+  snap0=snap();freezeOn();ran=true;
+  if(visible('pn')){var sk=[].slice.call($('pn').querySelectorAll('button')).filter(function(b){return b.textContent.trim()==='Skip'})[0];if(sk)sk.click();await sleep(300)}
+  var ok={};
+  ok.start=await check('startup: menu reached (splash gone, state menu)',function(){return !$('splash')&&G('state')==='menu'});
+  ok.rise=await check('main menu: Rise button visible',function(){return visible('go')});
+  ok.play=await check('start run: Rise starts a run and shows the HUD',async function(){$('go').click();var a=await waitFor(function(){return G('state')==='play'},2500);if(!a)return 'state did not become play within 2.5 s (state '+G('state')+')';return await waitFor(function(){return getComputedStyle($('hud')).visibility==='visible'},1000)||'HUD not visible'},function(){return ok.rise});
+  var inRun=function(){return ok.play};
+  // test-only collision ignore so movement checks are not cut short by an obstacle (restored below and in finally)
+  if(ok.play){origHit=G('hit');window.hit=function(){};}
+  await check('run advances: distance increases',async function(){var d0=gDist();await sleep(900);var d1=gDist();return d1>d0||('distance '+d0+' → '+d1)},inRun);
+  await check('HUD shows the distance (observable on screen)',async function(){var h0=hudDist(),d0=gDist();await sleep(900);var h1=hudDist(),d1=gDist();return h1>h0||('on-screen distance '+h0+' m → '+h1+' m while the game distance went '+d0+' → '+d1+': the HUD is not updating')},inRun);
+  var l0;ok.left=await check('lane change left (Left arrow): lane decreases and runner moves into it',async function(){if(G('ln')===0){key('ArrowRight');await sleep(300)}l0=G('ln');key('ArrowLeft');var a=await waitFor(function(){return G('ln')===l0-1&&Math.abs(G('p').x-G('LN')[G('ln')])<.6},1200);return a||('lane '+l0+' → '+G('ln')+', x '+(G('p').x).toFixed(2))},inRun);
+  await check('lane change right x2 (Right arrow): ends in lane 2',async function(){key('ArrowRight');key('ArrowRight');return await waitFor(function(){return G('ln')===2},1200)||('lane is '+G('ln'))},inRun);
+  await check('swipe left (touch pointer events): lane changes',async function(){var s0=G('ln');swipe(-110,4);return await waitFor(function(){return G('ln')===Math.max(0,s0-1)},800)||('lane '+s0+' → '+G('ln'))},inRun);
+  ok.jump=await check('jump (Up arrow): runner rises',async function(){await waitFor(function(){return G('p').y<.01},1500);key('ArrowUp');return await waitFor(function(){return G('p').y>.3},700)||('height '+G('p').y.toFixed(2))},inRun);
+  await check('jump: runner lands again',async function(){return await waitFor(function(){return G('p').y<.02},2500)||('still at height '+G('p').y.toFixed(2))},function(){return ok.jump});
+  ok.slide=await check('slide (Down arrow): slide starts',async function(){key('ArrowDown');return await waitFor(function(){return G('sl')>0},400)||'slide timer did not start'},inRun);
+  await check('slide: ends by itself',async function(){return await waitFor(function(){return G('sl')<=0},2000)||'slide did not end within 2 s'},function(){return ok.slide});
+  ok.pause=await check('pause (pause button): pause menu shown, state paused',async function(){$('bpause').click();return await waitFor(function(){return G('state')==='paused'&&visible('pm')},1000)||('state '+G('state'))},inRun);
+  await check('pause: distance frozen',async function(){var d0=gDist(),h0=hudDist();await sleep(700);return (gDist()===d0&&hudDist()===h0)||('distance changed while paused: '+d0+' → '+gDist())},function(){return ok.pause});
+  ok.resume=await check('resume (Resume button): play continues',async function(){$('brs').click();if(!await waitFor(function(){return G('state')==='play'},1000))return 'state '+G('state');var d0=gDist();await sleep(700);return gDist()>d0||('distance did not increase after resume: '+d0+' → '+gDist())},function(){return ok.pause});
+  if(origHit){window.hit=origHit;origHit=null}
+  ok.dead=await check('death (game die() function, not a real collision): run ends',async function(){G('die')();return await waitFor(function(){return G('state')==='dead'},500)||('state '+G('state'))},inRun);
+  ok.again=await check('results: Run again button shown (revive prompt declined if offered)',async function(){var a=await waitFor(function(){return visible('rvp')||visible('rra')},4000);if(!a)return 'neither revive prompt nor results appeared within 4 s';if(visible('rvp')){$('rvx').click();}return await waitFor(function(){return visible('rra')},3000)||'Run again button not visible'},function(){return ok.dead});
+  await check('restart (Run again): new run with distance reset',async function(){$('rra').click();if(!await waitFor(function(){return G('state')==='play'},2500))return 'state '+G('state');await sleep(300);return gDist()<50||('distance '+gDist()+' after restart')},function(){return ok.again});
+  if(G('state')==='play'){$('bpause').click();await sleep(200)}
+ }catch(e){rec('self-test runner','FAIL','unexpected error: '+(e&&e.message||e))}
+ finally{
+  if(origHit){try{window.hit=origHit}catch(e){}}
+  var bad=F.ops.filter(function(o){return o!=='clear'&&o.replace(/^(set|remove) /,'').indexOf(PFX)!==0});
+  rec('save isolation: every save attempted during the test used a '+PFX+' key',bad.length?'FAIL':'PASS',bad.length?'unprefixed: '+bad.slice(0,5).join('; '):F.ops.length+' save attempts recorded and blocked');
+  rec('save isolation: Stage 0 guard redirected no keys',D.rewrites===rew0?'PASS':'FAIL',D.rewrites===rew0?'':(D.rewrites-rew0)+' redirects');
+  var ch=ran?diff(snap0,snap()):[];rec('dev progress untouched: storage equals the snapshot taken before the test',ch.length?'FAIL':'PASS',ch.length?'changed: '+ch.join(', '):'');
+  var ne=errCount()-errs0;rec('no new errors during the test',ne?'FAIL':'PASS',ne?ne+' new error(s); see Errors list':'');
+  var text=report('SELF-TEST',R,t0);setBusy(false);
+  if(ran)finishWithReload({kind:'self',text:text,snapshot:snap0,results:R});else out(text)}
+}
+function report(kind,R,t0){var e=engine(),c={PASS:0,FAIL:0,SKIPPED:0};R.forEach(function(r){c[r.s]++});
+ return ['Bloodrush '+kind+' · '+D.build+' · '+new Date(t0).toISOString(),'Engine: '+e.label+(e.real?'':'  ← results are NOT valid real-engine results'),device()[0],
+  c.PASS+' passed, '+c.FAIL+' failed, '+c.SKIPPED+' skipped',''].concat(R.map(function(r){return r.s+'  '+r.n+(r.w?'  ('+r.w+')':'')})).join('\n')}
+
+// ================= BENCHMARK =================
+async function bench(mode){
+ var gameplay=mode==='run',dur=gameplay?30:5,origHit=null,raf=0,ran=false,errs0=errCount(),snap0=null,t0=Date.now(),hits=0,note=[];
+ if(G('state')!=='menu'||!visible('go')){out('Benchmark not started: open the main menu (Home tab) first. Nothing was changed.');return}
+ var Rr=G('R');if(!Rr||!Rr.info){out('Benchmark not started: the renderer is not available yet.');return}
+ var S={ft:[],calls:[],tris:[],geo:[],tex:[],hq0:G('CFG')?G('CFG').hq:null,hqDrop:null,start:0,end:0,interrupted:''};
+ setBusy(true,(gameplay?'Gameplay':'Menu')+' benchmark running for '+dur+' s. Leave the device still; tap Stop to cancel.');
+ try{
+  if(gameplay){snap0=snap();freezeOn();ran=true;if(visible('pn')){var sk=[].slice.call($('pn').querySelectorAll('button')).filter(function(b){return b.textContent.trim()==='Skip'})[0];if(sk)sk.click();await sleep(300)}
+   $('go').click();if(!await waitFor(function(){return G('state')==='play'},2500))throw new Error('run did not start (state '+G('state')+')');
+   // the 30 s run needs the runner alive: obstacles still spawn, move and render; hits are counted instead of applied (restored in finally)
+   origHit=G('hit');window.hit=function(){hits++};note.push('Collisions counted, not applied, so the run lasts the full 30 s');
+   await sleep(1000)}// let the run settle (spawns, first frames)
+  else await sleep(500);
+  var last=0,num=function(v){return typeof v==='number'&&isFinite(v)?v:null};
+  await new Promise(function(done){S.start=performance.now();
+   function f(t){if(last){S.ft.push(t-last);var i=Rr.info,r=i&&i.render,m=i&&i.memory;S.calls.push(num(r&&r.calls));S.tris.push(num(r&&r.triangles));S.geo.push(num(m&&m.geometries));S.tex.push(num(m&&m.textures))}last=t;
+    var cfg=G('CFG');if(S.hqDrop===null&&S.hq0&&cfg&&!cfg.hq)S.hqDrop=((t-S.start)/1000).toFixed(1);
+    if(gameplay&&G('state')!=='play'){S.interrupted='game left play state ('+G('state')+')';S.end=t;return done()}
+    if(cancel){S.interrupted='stopped by user';S.end=t;return done()}
+    if(t-S.start>=dur*1000){S.end=t;return done()}raf=requestAnimationFrame(f)}
+   raf=requestAnimationFrame(f)});
+ }catch(e){S.interrupted='error: '+(e&&e.message||e)}
+ finally{
+  if(raf)cancelAnimationFrame(raf);
+  if(origHit){try{window.hit=origHit}catch(e){}}
+  if(gameplay&&G('state')==='play'){try{$('bpause').click()}catch(e){}}
+  var text=benchReport(mode,dur,S,hits,note,errCount()-errs0,t0);
+  if(ran){var ch=diff(snap0,snap());text+='\n'+(ch.length?'FAIL  dev progress changed: '+ch.join(', '):'PASS  dev progress untouched (storage equals the snapshot; '+F.ops.length+' save attempts blocked)');}
+  setBusy(false);
+  if(ran)finishWithReload({kind:'bench',text:text,snapshot:snap0});else out(text)}
+}
+function pct(a,p){if(!a.length)return null;var s=a.slice().sort(function(x,y){return x-y});return s[Math.min(s.length-1,Math.floor(p/100*(s.length-1)+.5))]}
+function stat(a){var v=a.filter(function(x){return x!==null});if(!v.length)return null;var sum=v.reduce(function(x,y){return x+y},0);return{avg:sum/v.length,max:Math.max.apply(null,v),min:Math.min.apply(null,v),n:v.length}}
+function benchReport(mode,dur,S,hits,note,newErr,t0){var e=engine(),L=[],ft=S.ft,secs=(S.end-S.start)/1000;
+ L.push('Bloodrush BENCHMARK · '+(mode==='run'?'gameplay 30 s':'menu idle 5 s')+' · '+D.build+' · '+new Date(t0).toISOString());
+ L.push('Engine: '+e.label+(e.real?'':'  ← NOT valid: measured without the real Three.js engine'));L=L.concat(device());
+ var r=G('R');L.push('Renderer: pixel ratio '+(r&&r.getPixelRatio?r.getPixelRatio():'unavailable')+' · canvas '+(r&&r.domElement?r.domElement.width+'×'+r.domElement.height:'unavailable')+' · graphics '+(S.hq0===null?'unavailable':S.hq0?'High':'Low')+(S.hqDrop?' → auto-dropped to Low at '+S.hqDrop+' s':''));
+ if(S.interrupted)L.push('INCOMPLETE: '+S.interrupted+' after '+secs.toFixed(1)+' s');
+ L.push('','MEASURED frame timing ('+ft.length+' frames over '+secs.toFixed(1)+' s, via requestAnimationFrame):');
+ if(ft.length>10){var avg=ft.length/secs;L.push('  average FPS '+avg.toFixed(1)+' · median frame '+pct(ft,50).toFixed(1)+' ms · 95th pct '+pct(ft,95).toFixed(1)+' ms · 99th pct '+pct(ft,99).toFixed(1)+' ms ("1% low" ≈ '+(1000/pct(ft,99)).toFixed(0)+' FPS)');
+  L.push('  slowest frame '+Math.max.apply(null,ft).toFixed(0)+' ms · frames over 33 ms: '+ft.filter(function(x){return x>33.4}).length+' · over 50 ms: '+ft.filter(function(x){return x>50}).length)}
+ else L.push('  not enough frames recorded');
+ L.push('','MEASURED renderer (Three.js renderer.info, sampled every frame):');
+ function row(lbl,a){var s=stat(a);L.push('  '+lbl+': '+(s?'avg '+Math.round(s.avg).toLocaleString()+' · max '+s.max.toLocaleString()+' · min '+s.min.toLocaleString():'unavailable on this device/engine'))}
+ row('draw calls',S.calls);row('triangles',S.tris);row('geometries in memory',S.geo);row('textures in memory',S.tex);
+ if(mode==='run')L.push('','Would-be collisions during the run: '+hits);
+ note.forEach(function(n){L.push('Note: '+n)});L.push('Note: debug overlay was open during measurement; randomness not fixed, so repeat the run to judge variation');
+ L.push('New errors during benchmark: '+newErr);return L.join('\n')}
+
+// ================= results after the automatic reload =================
+(function(){if(!SSok)return;var raw=null;try{raw=sessionStorage.getItem(RKEY)}catch(e){}if(!raw)return;var rep=null;try{rep=JSON.parse(raw)}catch(e){}
+ try{sessionStorage.removeItem(RKEY)}catch(e){}if(!rep)return;
+ D.show(true);out(rep.text+'\n\nPage reloaded. Checking normal startup…');
+ waitFor(function(){return G('state')==='menu'&&!$('splash')},30000).then(function(ok){var lines=[rep.text,'','After reload:'];
+  lines.push((ok?'PASS':'FAIL')+'  normal startup: main menu reached'+(ok?'':' within 30 s (state '+G('state')+')'));
+  var ch=rep.snapshot?diff(rep.snapshot,snap()):[];lines.push((ch.length?'INFO':'PASS')+'  dev save after startup '+(ch.length?'differs from the pre-test snapshot in: '+ch.join(', ')+' (written by normal startup, not by the test; check if unexpected)':'equals the pre-test snapshot'));
+  lines.push('Saving: active again');out(lines.join('\n'))})})();
 })();
 </script>
 </body></html>
